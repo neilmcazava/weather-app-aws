@@ -9,6 +9,10 @@ Please have **AWS CREDENTIALS** ready.
 ### For Local Development
 Go to **./services/service/README.md** for local development process.
 
+## Architecture
+<p align="center">
+  <img src="/architecture-diagram.svg" />
+</p>
 
 ## Environment
 
