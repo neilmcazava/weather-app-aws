@@ -1,0 +1,30 @@
+service: common
+
+projectDir: ..
+
+plugins:
+  - "@purple/serverless-s3-remover"
+
+package:
+  patterns:
+    - '!node_modules/**'
+    - '!.serverless/**'
+
+custom:
+  project: ${file(../config.yml):project}
+  baseName: ${self:custom.project}-${self:provider.stage}-${self:service}
+
+  remover:
+    buckets:
+      - ${cf:${self:custom.baseName}.ServerlessDeploymentBucketName, ''}
+
+provider:
+  name: aws
+  region: ${opt:stage, 'eu-west-1'}
+  stage: ${opt:stage, 'dev'}
+  stackName: ${self:custom.baseName} 
+  deploymentBucket:
+    blockPublicAccess: true
+
+resources:
+  Resources:

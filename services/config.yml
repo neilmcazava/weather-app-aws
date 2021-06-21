@@ -1,0 +1,5 @@
+project: bbc-weather
+
+logLevelPerEnv:
+  test: "INFO"
+logLevel: ${file(../config.yml):logLevelPerEnv.${self:provider.stage}, "INFO"}

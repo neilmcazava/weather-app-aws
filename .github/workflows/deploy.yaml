@@ -1,0 +1,46 @@
+name: 'commits to [main]'
+
+on:
+  push:
+    branches: [ main ]
+  
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: 'CI/CD deploy - stage=test'
+    
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Install Checkout
+      uses: actions/checkout@v2
+    
+    - name: Install Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+    
+    - name: Install Yarn
+      run: npm install --global yarn
+    
+    - name: Install Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    
+    - name: Install project dependencies with a clean state
+      run: yarn run ci
+
+    - name: Run Unit Tests
+      run: yarn run test
+    
+    - name: Deploy Test Stage
+      run: yarn run deploy --stage test --region eu-west-1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

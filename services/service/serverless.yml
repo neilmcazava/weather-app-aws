@@ -1,0 +1,56 @@
+service: api
+
+projectDir: ..
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!__pycache__/**'
+    - '!env/**'
+
+custom:
+  project: ${file(../config.yml):project}
+  baseName: ${self:custom.project}-${self:provider.stage}-${self:service}
+
+  pythonRequirements:
+    dockerizePip: non-linux
+    slim: true
+    layer: true
+    useStaticCache: false
+    useDownloadCache: false
+    invalidateCaches: true
+  
+  serverless-iam-roles-per-function:
+    defaultInherit: true
+  
+provider:
+  name: aws
+  region: ${opt:stage, 'eu-west-1'}
+  stage: ${opt:stage, 'dev'}
+  stackName: ${self:custom.baseName}  
+  runtime: python3.8
+  timeout: 29
+  memorySize: 128
+  versionFunctions: false
+  logRetentionInDays: 30
+  deploymentBucket:
+    name: ${cf:${self:custom.project}-${self:provider.stage}-common.ServerlessDeploymentBucketName}
+  environment:
+    LOG_LEVEL: ${file(../config.yml):logLevel}
+    ENVIRONMENT: ${self:provider.stage}
+
+functions:
+  api:
+    name: ${self:custom.baseName}
+    handler: src/main.handler
+    events:
+      - httpApi:
+          path: /
+          method: GET
+      - schedule: rate(1 hour)
+    layers:
+      - Ref: PythonRequirementsLambdaLayer

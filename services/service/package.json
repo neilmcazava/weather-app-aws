@@ -1,0 +1,16 @@
+{
+  "name": "@bbc-weather/api",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "invoke-local": "serverless invoke local",
+    "invoke": "serverless invoke",
+    "logs": " serverless logs",
+    "remove": "serverless remove",
+    "test": "python3 -m pip install --upgrade pip && pip3 install -r test_requirements.txt && pytest tests"
+  },
+  "dependencies": {
+    "@bbc-weather/common": "1.0.0"
+  }
+}
