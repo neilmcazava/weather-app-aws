@@ -20,9 +20,6 @@ custom:
     dockerizePip: non-linux
     slim: true
     layer: true
-    useStaticCache: false
-    useDownloadCache: false
-    invalidateCaches: true
   
   serverless-iam-roles-per-function:
     defaultInherit: true

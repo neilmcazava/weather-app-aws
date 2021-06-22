@@ -9,7 +9,7 @@
   "scripts": {
     "ci": "yarn install --frozen-lockfile",
     "deploy": "lerna run deploy --stream --",
-    "remove": "lerna run remove --stream --",
+    "remove": "lerna ls --toposort | tail -r | xargs -I % lerna run --stream --no-bail --scope % remove --",
     "test": "lerna run test"
   },
   "devDependencies": {
