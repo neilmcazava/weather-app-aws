@@ -1,4 +1,4 @@
-# BBC Weather Script & CI
+# BBC Weather App
 
 Deploy a lambda to return current temperature in Lerwick, Shetland.
 
@@ -32,9 +32,6 @@ This project uses...
 ## File Structure
 ```
 /
-├─ .github/                     - github action as ci/cd
-    └─ workflows/               - directory for different ci/cd pipelines
-        └─ deploy.yaml          - ci pipeline for each commit [main]
 └─ services/
     ├─ common/                  - common services used by micro services
     └─ service/                 - deploys cloud service
@@ -75,9 +72,6 @@ yarn run install
 
 - Default Region = *eu-west-1*
 - Default Stage = *dev*
-
-- CI Region = *eu-west-1*
-- CI Stage = *test*
 
 ```bash
 yarn run deploy [--region | --r <REGION>] [--stage | --s <STAGE>]
